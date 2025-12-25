@@ -1,0 +1,19 @@
+{
+  "name": "redact-env",
+  "version": "1.0.0",
+  "description": "Automatic secret redaction for Claude Code",
+  "type": "module",
+  "bin": {
+    "redact-env": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "esbuild src/hook.ts --bundle --platform=node --format=esm --outfile=dist/hook.js --banner:js='#!/usr/bin/env node' && esbuild bin/cli.ts --bundle --platform=node --format=esm --outfile=dist/cli.js --banner:js='#!/usr/bin/env node'",
+    "test": "node --import tsx --test test/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.24.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
