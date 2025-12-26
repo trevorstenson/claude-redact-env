@@ -73,7 +73,7 @@ export function createRedactedFile(originalPath: string): string | null {
     return tempPath;
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error(`[redact-env] Error processing ${originalPath}: ${message}`);
+    console.error(`[claude-redact-env] Error processing ${originalPath}: ${message}`);
     return null;
   }
 }

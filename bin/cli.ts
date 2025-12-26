@@ -1,9 +1,9 @@
 /**
- * redact-env CLI
+ * claude-redact-env CLI
  *
  * Usage:
- *   redact-env install    - Install hooks into Claude Code
- *   redact-env uninstall  - Remove hooks from Claude Code
+ *   claude-redact-env install    - Install hooks into Claude Code
+ *   claude-redact-env uninstall  - Remove hooks from Claude Code
  */
 
 import { install, uninstall } from '../src/installer.js';
@@ -12,14 +12,14 @@ const command = process.argv[2];
 
 function showHelp(): void {
   console.log(`
-redact-env - Automatic secret redaction for AI coding agents
+claude-redact-env - Automatic secret redaction for Claude Code
 
 Usage:
-  redact-env install     Install hooks into Claude Code
-  redact-env uninstall   Remove hooks from Claude Code
-  redact-env --help      Show this help message
+  claude-redact-env install     Install hooks into Claude Code
+  claude-redact-env uninstall   Remove hooks from Claude Code
+  claude-redact-env --help      Show this help message
 
-When installed, redact-env will automatically redact secrets from:
+When installed, claude-redact-env will automatically redact secrets from:
   • .env files (.env, .env.local, .env.production, etc.)
   • Private keys (*.pem, *.key)
   • Credential files (credentials.json, secrets.yaml)

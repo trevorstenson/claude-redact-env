@@ -35,7 +35,7 @@ interface ClaudeSettings {
 }
 
 export function install(): void {
-  console.log('Installing redact-env...\n');
+  console.log('Installing claude-redact-env...\n');
 
   const hookSource = join(__dirname, 'hook.js');
   if (!existsSync(hookSource)) {
@@ -44,7 +44,7 @@ export function install(): void {
   }
 
   mkdirSync(HOOKS_DIR, { recursive: true });
-  const hookDest = join(HOOKS_DIR, 'redact-env.js');
+  const hookDest = join(HOOKS_DIR, 'claude-redact-env.js');
   copyFileSync(hookSource, hookDest);
   console.log(`Copied hook to ${hookDest}`);
 
@@ -63,7 +63,7 @@ export function install(): void {
   const hookCommand = `${process.execPath} ${hookDest}`;
 
   const alreadyInstalled = config.hooks.PreToolUse.some(h =>
-    h.hooks?.some(hh => hh.command?.includes('redact-env'))
+    h.hooks?.some(hh => hh.command?.includes('claude-redact-env'))
   );
 
   if (alreadyInstalled) {
@@ -88,7 +88,7 @@ export function install(): void {
 }
 
 export function uninstall(): void {
-  console.log('Uninstalling redact-env...\n');
+  console.log('Uninstalling claude-redact-env...\n');
 
   if (existsSync(SETTINGS_PATH)) {
     try {
@@ -96,7 +96,7 @@ export function uninstall(): void {
 
       if (config.hooks?.PreToolUse) {
         config.hooks.PreToolUse = config.hooks.PreToolUse.filter(h =>
-          !h.hooks?.some(hh => hh.command?.includes('redact-env'))
+          !h.hooks?.some(hh => hh.command?.includes('claude-redact-env'))
         );
 
         if (config.hooks.PreToolUse.length === 0) delete config.hooks.PreToolUse;
@@ -110,7 +110,7 @@ export function uninstall(): void {
     }
   }
 
-  const hookPath = join(HOOKS_DIR, 'redact-env.js');
+  const hookPath = join(HOOKS_DIR, 'claude-redact-env.js');
   if (existsSync(hookPath)) {
     unlinkSync(hookPath);
     console.log(`Removed ${hookPath}`);

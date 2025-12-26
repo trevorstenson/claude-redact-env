@@ -1,5 +1,5 @@
 /**
- * redact-env PreToolUse hook
+ * claude-redact-env PreToolUse hook
  *
  * This script runs on every PreToolUse event for Read and Bash tools.
  * It intercepts file reads, creates redacted copies, and rewrites the tool input
@@ -129,7 +129,7 @@ async function main(): Promise<void> {
     process.exit(0);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error(`[redact-env] Error: ${message}`);
+    console.error(`[claude-redact-env] Error: ${message}`);
     process.exit(0);
   }
 }

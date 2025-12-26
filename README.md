@@ -1,8 +1,8 @@
-# redact-env
+# claude-redact-env
 
 Stop accidentally leaking secrets to AI agents.
 
-`redact-env` is a [Claude Code](https://claude.ai/code) hook that automatically redacts sensitive values from `.env` files before the AI can see them.
+`claude-redact-env` is a [Claude Code](https://claude.ai/code) hook that automatically redacts sensitive values from `.env` files before the AI can see them.
 
 ## The Problem
 
@@ -19,8 +19,8 @@ Now those secrets are in the conversation context. Not ideal.
 ## The Solution
 
 ```bash
-git clone https://github.com/yourname/redact-env
-cd redact-env
+git clone https://github.com/yourname/claude-redact-env
+cd claude-redact-env
 npm install && npm run build
 node dist/cli.js install
 ```
