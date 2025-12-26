@@ -84,8 +84,7 @@ export function install(): void {
   }
 
   console.log('\nInstalled.');
-  console.log('\nFully quit and restart Claude Code (Cmd+Q / Ctrl+Q).');
-  console.log('"New session" alone won\'t load the hooks.\n');
+  console.log('\nFully quit and restart Claude Code.');
 }
 
 export function uninstall(): void {
