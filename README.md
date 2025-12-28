@@ -1,50 +1,46 @@
 # claude-redact-env
 
-Stop accidentally leaking secrets to AI agents.
+A [Claude Code](https://claude.ai/code) hook that stops you from accidentally leaking secrets to the AI. It automatically redacts sensitive values from `.env` files before Claude sees them.
 
-`claude-redact-env` is a [Claude Code](https://claude.ai/code) hook that automatically redacts sensitive values from `.env` files before the AI can see them.
+When you ask Claude to "check my config," it reads your `.env` file. Now your API keys and database passwords are in the chat context.
 
-## The Problem
+This hook sits in the middle. It intercepts file reads and potentially poroblematic bash commands, scrubs the secrets, and passes the safe version to Claude.
 
-You're pair programming with Claude, and it reads your `.env` file:
-
+**Real file:**
 ```
 OPENAI_API_KEY=sk-proj-abc123...
-STRIPE_SECRET_KEY=sk_live_xyz789...
-DATABASE_URL=postgres://admin:supersecret@prod.db.com/main
+DATABASE_URL=postgres://admin:secret@db.com
 ```
 
-Now those secrets are in the conversation context. Not ideal.
+**What Claude sees:**
+```
+OPENAI_API_KEY=<REDACTED:OPENAI_KEY>
+DATABASE_URL=postgres://<USER>:<REDACTED>@db.com
+```
 
-## The Solution
+It keeps the general structure intact to convey meaning, but redacts the actual sensitive information.
+
+## Usage
 
 ```bash
-git clone https://github.com/yourname/claude-redact-env
+git clone https://github.com/trevorstenson/claude-redact-env
 cd claude-redact-env
 npm install && npm run build
 node dist/cli.js install
 ```
 
-Now when Claude reads that same file:
+## What it Catches
 
-```
-OPENAI_API_KEY=<REDACTED:OPENAI_KEY>
-STRIPE_SECRET_KEY=<REDACTED:STRIPE_SECRET>
-DATABASE_URL=postgres://<USER>:<REDACTED>@prod.db.com/main
-```
+**Files:** `.env*`, `*.pem`, `credentials.json`, `secrets.yaml`, `.netrc`
 
-Secrets stay secret. You keep coding.
+**Patterns:**
+- OpenAI, Stripe, AWS, & GitHub keys
+- Database connection strings (scrubs password, keeps the URI)
+- Generic `PASSWORD=` or `SECRET=` assignments
 
-## Install
+## How it Works
 
-```bash
-npm install && npm run build
-node dist/cli.js install
-```
-
-Then **fully quit and restart Claude Code** (Cmd+Q / Ctrl+Q).
-
-> "New session" isn't enough—hooks only load on full restart.
+It installs a [PreToolUse hook](https://docs.anthropic.com/en/docs/claude-code/hooks). When the agent tries to use `Read` or `Bash` (like `cat .env`), the hook detects the sensitive target, creates a temp file with redacted values, and silently redirects the agent to read that instead. [Read the blog about it here](https://trevo.rs/agent-redaction).
 
 ## Uninstall
 
@@ -52,37 +48,3 @@ Then **fully quit and restart Claude Code** (Cmd+Q / Ctrl+Q).
 node dist/cli.js uninstall
 ```
 
-## What Gets Protected
-
-**Files:**
-- `.env`, `.env.*` (`.env.local`, `.env.production`, etc.)
-- `*.pem`, `*.key`
-- `credentials.json`, `secrets.yaml`
-- `.netrc`, `.pgpass`
-
-**Patterns:**
-- OpenAI keys (`sk-...`)
-- GitHub tokens (`ghp_...`, `github_pat_...`)
-- AWS credentials
-- Stripe keys
-- Database connection strings
-- Generic `PASSWORD=`, `SECRET=`, `API_KEY=` patterns
-
-## How It Works
-
-Installs as a [PreToolUse hook](https://docs.anthropic.com/en/docs/claude-code/hooks) in Claude Code:
-
-1. Hook intercepts `Read` and `Bash` tool calls
-2. If target is a sensitive file, creates temp copy with secrets redacted
-3. Redirects Claude to read the redacted version
-4. Original file untouched
-
-## Run Tests
-
-```bash
-npm test
-```
-
-## License
-
-MIT
