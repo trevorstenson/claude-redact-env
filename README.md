@@ -4,7 +4,7 @@ A [Claude Code](https://claude.ai/code) hook that stops you from accidentally le
 
 When you ask Claude to "check my config," it reads your `.env` file. Now your API keys and database passwords are in the chat context.
 
-This hook sits in the middle. It intercepts file reads and potentially poroblematic bash commands, scrubs the secrets, and passes the safe version to Claude.
+This hook sits in the middle. It intercepts file reads and potentially problematic bash commands, scrubs the secrets, and passes the safe version to Claude.
 
 **Real file:**
 ```
